@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    @php($appName = 'Sistem Informasi Buku Tamu Digital - Sibudi')
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Buku Tamu Pemerintahan</title>
+    <title>@yield('title') - {{ $appName }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -15,8 +16,22 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .navbar-brand {
+            align-items: center;
+            display: flex;
+            gap: 10px;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            max-width: min(720px, 78vw);
+            white-space: normal;
+        }
+        .app-logo {
+            background-color: white;
+            border-radius: 6px;
+            height: 42px;
+            object-fit: contain;
+            padding: 3px;
+            width: 42px;
         }
         .sidebar {
             background-color: white;
@@ -47,8 +62,9 @@
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-book"></i> Buku Tamu Pemerintahan
+            <a class="navbar-brand" href="{{ session('admin_logged_in') ? route('dashboard.index') : route('login') }}">
+                <img src="{{ asset('images/logo_disdik.png') }}" alt="Logo Disdik" class="app-logo">
+                <span>{{ $appName }}</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -56,6 +72,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     @if(session('admin_logged_in'))
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('dashboard.index') }}">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('guestbook.index') }}">
+                                <i class="bi bi-table"></i> Data Tamu
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <span class="nav-link text-white">
                                 <i class="bi bi-person-circle"></i> {{ session('admin_name') }}
@@ -102,7 +128,7 @@
 
     <footer class="mt-5 py-4 border-top bg-light">
         <div class="container-fluid text-center text-muted">
-            <small>&copy; 2026 Buku Tamu Pemerintahan. All rights reserved.</small>
+            <small>&copy; 2026 {{ $appName }}. All rights reserved.</small>
         </div>
     </footer>
 

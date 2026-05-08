@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guestbook;
+use App\Models\Personil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -34,7 +35,15 @@ class GuestbookController extends Controller
 
     public function publicCreate()
     {
+        $bidangOptions = Personil::with('bidang')
+            ->orderBy('name')
+            ->get()
+            ->map(function (Personil $personil) {
+                return $personil->name . ' - ' . $personil->bidang->name;
+            });
+
         return view('guestbook.create', [
+            'bidangOptions' => $bidangOptions,
             'formAction' => route('tamu.store'),
             'isPublicGuestForm' => true,
             'pageTitle' => 'Isi Buku Tamu',
@@ -69,11 +78,17 @@ class GuestbookController extends Controller
             'organization' => 'required|string|max:255',
             'visit_date' => 'required|date',
             'message' => 'required|string',
-            'status' => 'required|in:pending,approved,rejected',
         ]);
 
         $guestbook = Guestbook::findOrFail($id);
-        $guestbook->update($request->all());
+        $guestbook->update($request->only([
+            'name',
+            'email',
+            'phone',
+            'organization',
+            'visit_date',
+            'message',
+        ]));
         return redirect()->route('guestbook.index')->with('success', 'Data tamu berhasil diperbarui');
     }
 
@@ -99,7 +114,7 @@ class GuestbookController extends Controller
 
         $callback = function () use ($guestbooks) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['No', 'Nama', 'Email', 'Telepon', 'Organisasi', 'Tanggal Kunjungan', 'Pesan', 'Status', 'Dibuat']);
+            fputcsv($file, ['No', 'Nama', 'Email', 'Telepon', 'Organisasi', 'Tanggal Kunjungan', 'Pesan', 'Dibuat']);
             
             $no = 1;
             foreach ($guestbooks as $entry) {
@@ -111,7 +126,6 @@ class GuestbookController extends Controller
                     $entry->organization,
                     $entry->visit_date,
                     $entry->message,
-                    $entry->status,
                     $entry->created_at,
                 ]);
             }
@@ -145,7 +159,8 @@ class GuestbookController extends Controller
     private function ensureAdmin(): void
     {
         if (!session('admin_logged_in')) {
-            abort(403, 'Unauthorized');
+            redirect()->route('login')->send();
+            exit;
         }
     }
 

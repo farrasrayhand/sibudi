@@ -9,7 +9,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (session('admin_logged_in')) {
-            return redirect()->route('guestbook.index');
+            return redirect()->route('dashboard.index');
         }
         return view('auth.login');
     }
@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if ($request->username === 'admin' && $request->password === 'admin123') {
             session(['admin_logged_in' => true, 'admin_name' => 'Administrator']);
-            return redirect()->route('guestbook.index')->with('success', 'Login berhasil');
+            return redirect()->route('dashboard.index')->with('success', 'Login berhasil');
         }
 
         return back()->withErrors(['credentials' => 'Username atau password salah'])->withInput();
@@ -35,4 +35,3 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Logout berhasil');
     }
 }
-

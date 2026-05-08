@@ -1,6 +1,6 @@
-# SIBUDI - Buku Tamu Digital
+# Sistem Informasi Buku Tamu Digital - Sibudi
 
-Folder ini berisi aplikasi Laravel utama untuk SIBUDI.
+Folder ini berisi aplikasi Laravel utama untuk Sistem Informasi Buku Tamu Digital - Sibudi.
 
 Panduan instalasi lengkap tersedia di:
 

@@ -8,10 +8,8 @@
         <div class="card shadow-lg border-0">
             <div class="card-body p-5">
                 <div class="text-center mb-4">
-                    <h2 class="text-primary mb-2">
-                        <i class="bi bi-shield-check" style="font-size: 2.5rem;"></i>
-                    </h2>
-                    <h3 class="fw-bold">Buku Tamu Pemerintahan</h3>
+                    <img src="{{ asset('images/logo_disdik.png') }}" alt="Logo Disdik" class="login-logo mb-3">
+                    <h3 class="fw-bold">Sistem Informasi Buku Tamu Digital - Sibudi</h3>
                     <p class="text-muted">Login Administrator</p>
                 </div>
 
@@ -67,4 +65,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('extra_css')
+<style>
+    .login-logo {
+        height: 96px;
+        object-fit: contain;
+        width: 96px;
+    }
+</style>
 @endsection
