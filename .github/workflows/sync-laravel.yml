@@ -1,0 +1,30 @@
+name: Sync Laravel Branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'source/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Penting untuk subtree agar sejarahnya terbaca semua
+
+      - name: Config Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync Subtree to Laravel Branch
+        run: |
+          # Split folder 'source' ke branch sementara
+          git subtree split --prefix=source -b temp-laravel
+          
+          # Force push ke branch 'laravel' di remote
+          git push origin temp-laravel:laravel --force
