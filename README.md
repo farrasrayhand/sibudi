@@ -1,6 +1,6 @@
-# SIBUDI - Buku Tamu Digital
+# Sistem Informasi Buku Tamu Digital - Sibudi
 
-SIBUDI adalah aplikasi buku tamu berbasis Laravel untuk mencatat data kunjungan, status tamu, export CSV, dan foto tamu dari kamera browser/Windows.
+Sistem Informasi Buku Tamu Digital - Sibudi adalah aplikasi buku tamu berbasis Laravel untuk mencatat data kunjungan, export CSV, dan foto tamu dari kamera browser/Windows.
 
 ## Fitur
 

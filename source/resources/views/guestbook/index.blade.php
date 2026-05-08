@@ -32,7 +32,6 @@
                         <th>Telepon</th>
                         <th>Organisasi</th>
                         <th>Tanggal Kunjungan</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -52,15 +51,6 @@
                             <td>{{ $entry->phone }}</td>
                             <td>{{ $entry->organization }}</td>
                             <td>{{ \Carbon\Carbon::parse($entry->visit_date)->format('d-m-Y') }}</td>
-                            <td>
-                                @if($entry->status == 'approved')
-                                    <span class="badge badge-status bg-success">Disetujui</span>
-                                @elseif($entry->status == 'rejected')
-                                    <span class="badge badge-status bg-danger">Ditolak</span>
-                                @else
-                                    <span class="badge badge-status bg-warning">Pending</span>
-                                @endif
-                            </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="{{ route('guestbook.edit', $entry->id) }}" class="btn btn-outline-primary" title="Edit">

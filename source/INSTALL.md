@@ -1,6 +1,6 @@
-# Panduan Instalasi SIBUDI
+# Panduan Instalasi Sistem Informasi Buku Tamu Digital - Sibudi
 
-Panduan ini untuk menjalankan aplikasi Buku Tamu SIBUDI di Laragon atau local server Laravel.
+Panduan ini untuk menjalankan aplikasi Sistem Informasi Buku Tamu Digital - Sibudi di Laragon atau local server Laravel.
 
 ## Kebutuhan
 
@@ -72,6 +72,19 @@ Jika ingin reset database dari awal sekaligus isi data contoh:
 
 ```bash
 php artisan migrate:fresh --seed
+```
+
+Seeder akan otomatis mengisi:
+
+- Data buku tamu contoh
+- Table `employment_statuses` berisi `PNS` dan `P3K`
+- Table `bidangs` berisi daftar bidang
+- Table `personils` berisi daftar nama ASN/P3K 2025
+
+Jika hanya ingin mengisi ulang data PNS/P3K, bidang, dan nama tanpa reset database:
+
+```bash
+php artisan db:seed --class=PersonilSeeder
 ```
 
 9. Buat link storage untuk menyimpan foto kamera.

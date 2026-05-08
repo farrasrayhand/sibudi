@@ -77,19 +77,6 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                    <select id="status" name="status" class="form-select @error('status') is-invalid @enderror" required>
-                        <option value="">-- Pilih Status --</option>
-                        <option value="pending" {{ old('status', $guestbook->status) == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="approved" {{ old('status', $guestbook->status) == 'approved' ? 'selected' : '' }}>Disetujui</option>
-                        <option value="rejected" {{ old('status', $guestbook->status) == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                    </select>
-                    @error('status')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary btn-custom">
                         <i class="bi bi-check-circle"></i> Perbarui

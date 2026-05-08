@@ -56,9 +56,24 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="organization" class="form-label fw-semibold">Organisasi/Perusahaan <span class="text-danger">*</span></label>
-                    <input type="text" id="organization" name="organization" class="form-control @error('organization') is-invalid @enderror" 
-                           placeholder="Nama organisasi" required value="{{ old('organization') }}">
+                    <label for="organization" class="form-label fw-semibold">
+                        {{ $isPublicGuestForm ? 'Nama PNS - Nama Bidang' : 'Organisasi/Perusahaan' }}
+                        <span class="text-danger">*</span>
+                    </label>
+                    @if($isPublicGuestForm)
+                        <input type="search" id="organization" name="organization" list="bidangOptions"
+                               class="form-control @error('organization') is-invalid @enderror"
+                               placeholder="Ketik nama PNS atau nama bidang" required value="{{ old('organization') }}" autocomplete="off">
+                        <datalist id="bidangOptions">
+                            @foreach(($bidangOptions ?? []) as $option)
+                                <option value="{{ $option }}"></option>
+                            @endforeach
+                        </datalist>
+                        <small class="text-muted">Pilih dari daftar dengan format Nama PNS - Nama Bidang.</small>
+                    @else
+                        <input type="text" id="organization" name="organization" class="form-control @error('organization') is-invalid @enderror"
+                               placeholder="Nama organisasi" required value="{{ old('organization') }}">
+                    @endif
                     @error('organization')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
