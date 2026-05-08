@@ -6,6 +6,7 @@ SIBUDI adalah aplikasi buku tamu berbasis Laravel untuk mencatat data kunjungan,
 
 - Login admin sederhana
 - CRUD data tamu
+- Halaman publik untuk tamu isi sendiri tanpa login
 - Ambil foto tamu dari kamera
 - Preview foto di daftar tamu
 - Export data ke CSV
@@ -115,6 +116,7 @@ Password: admin123
 Login:        http://127.0.0.1:8000/login
 Daftar tamu:  http://127.0.0.1:8000/guestbook
 Tambah tamu:  http://127.0.0.1:8000/guestbook/create
+Form publik:  http://127.0.0.1:8000/tamu
 ```
 
 ## Fitur Kamera

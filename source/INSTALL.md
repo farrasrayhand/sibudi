@@ -109,6 +109,12 @@ Form tambah tamu ada di:
 http://127.0.0.1:8000/guestbook/create
 ```
 
+Form publik tanpa login untuk tamu isi sendiri ada di:
+
+```text
+http://127.0.0.1:8000/tamu
+```
+
 Klik tombol `Buka Kamera`, lalu izinkan akses kamera dari Windows/browser. Setelah foto diambil, gambar akan tersimpan saat form disubmit.
 
 Foto tersimpan di:

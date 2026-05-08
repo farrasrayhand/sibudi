@@ -9,55 +9,59 @@ use Illuminate\Support\Str;
 
 class GuestbookController extends Controller
 {
-    public function __construct()
-    {
-        // Check authentication before each method
-        if (!session('admin_logged_in')) {
-            abort(403, 'Unauthorized');
-        }
-    }
-
     public function index()
     {
+        $this->ensureAdmin();
+
         $guestbooks = Guestbook::orderBy('visit_date', 'desc')->paginate(10);
         return view('guestbook.index', compact('guestbooks'));
     }
 
     public function create()
     {
+        $this->ensureAdmin();
+
         return view('guestbook.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required|string|max:20',
-            'organization' => 'required|string|max:255',
-            'visit_date' => 'required|date',
-            'message' => 'required|string',
-            'photo' => 'nullable|string',
-        ]);
+        $this->ensureAdmin();
 
-        $data = $request->except('photo');
-
-        if ($request->filled('photo')) {
-            $data['photo'] = $this->storeCameraPhoto($request->input('photo'));
-        }
-
-        Guestbook::create($data);
+        $this->createGuestbook($request);
         return redirect()->route('guestbook.index')->with('success', 'Data tamu berhasil ditambahkan');
+    }
+
+    public function publicCreate()
+    {
+        return view('guestbook.create', [
+            'formAction' => route('tamu.store'),
+            'isPublicGuestForm' => true,
+            'pageTitle' => 'Isi Buku Tamu',
+        ]);
+    }
+
+    public function publicStore(Request $request)
+    {
+        $this->createGuestbook($request);
+
+        return redirect()
+            ->route('tamu.create')
+            ->with('success', 'Terima kasih, data kunjungan Anda berhasil dikirim.');
     }
 
     public function edit($id)
     {
+        $this->ensureAdmin();
+
         $guestbook = Guestbook::findOrFail($id);
         return view('guestbook.edit', compact('guestbook'));
     }
 
     public function update(Request $request, $id)
     {
+        $this->ensureAdmin();
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -75,12 +79,16 @@ class GuestbookController extends Controller
 
     public function destroy($id)
     {
+        $this->ensureAdmin();
+
         Guestbook::findOrFail($id)->delete();
         return redirect()->route('guestbook.index')->with('success', 'Data tamu berhasil dihapus');
     }
 
     public function export()
     {
+        $this->ensureAdmin();
+
         $guestbooks = Guestbook::all();
         $filename = 'guestbook-' . date('Y-m-d') . '.csv';
 
@@ -111,6 +119,34 @@ class GuestbookController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    private function createGuestbook(Request $request): Guestbook
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'organization' => 'required|string|max:255',
+            'visit_date' => 'required|date',
+            'message' => 'required|string',
+            'photo' => 'nullable|string',
+        ]);
+
+        $data = $request->except('photo');
+
+        if ($request->filled('photo')) {
+            $data['photo'] = $this->storeCameraPhoto($request->input('photo'));
+        }
+
+        return Guestbook::create($data);
+    }
+
+    private function ensureAdmin(): void
+    {
+        if (!session('admin_logged_in')) {
+            abort(403, 'Unauthorized');
+        }
     }
 
     private function storeCameraPhoto(string $photo): ?string
