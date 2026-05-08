@@ -1,12 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Data Tamu')
+@php
+    $isPublicGuestForm = $isPublicGuestForm ?? false;
+    $pageTitle = $pageTitle ?? 'Tambah Data Tamu';
+    $formAction = $formAction ?? route('guestbook.store');
+@endphp
+
+@section('title', $pageTitle)
 
 @section('content')
 <div class="row mb-4">
     <div class="col-md-12">
         <h2 class="mb-0">
-            <i class="bi bi-person-plus"></i> Tambah Data Tamu Baru
+            <i class="bi bi-person-plus"></i> {{ $pageTitle }}
         </h2>
     </div>
 </div>
@@ -14,7 +20,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="main-content">
-            <form action="{{ route('guestbook.store') }}" method="POST">
+            <form action="{{ $formAction }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
@@ -115,9 +121,11 @@
                     <button type="submit" class="btn btn-primary btn-custom">
                         <i class="bi bi-check-circle"></i> Simpan
                     </button>
-                    <a href="{{ route('guestbook.index') }}" class="btn btn-secondary btn-custom">
-                        <i class="bi bi-x-circle"></i> Batal
-                    </a>
+                    @unless($isPublicGuestForm)
+                        <a href="{{ route('guestbook.index') }}" class="btn btn-secondary btn-custom">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </a>
+                    @endunless
                 </div>
             </form>
         </div>
@@ -133,7 +141,7 @@
             </p>
             <hr>
             <p class="small text-muted">
-                <strong>Catatan:</strong> Semua data yang diisi akan disimpan dan dapat dilihat oleh admin.
+                <strong>Catatan:</strong> Semua data yang diisi akan disimpan dan hanya dapat dilihat oleh admin.
             </p>
         </div>
     </div>
